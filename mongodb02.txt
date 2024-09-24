@@ -1,0 +1,146 @@
+Assignment no.2 (Group B)
+test> use camp
+switched to db camp
+camp> db.createCollection('website');
+{ ok: 1 }
+camp> db.website.insert({'roll':'1','name':'riya','amount':1000,'url':'www.yahoo.com'});
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66f2555decb84139ec964033') }
+}
+camp> db.website.insert({'roll':'2','name':'siddhi','amount':2000,'url':'www.yahoo.com'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66f2556decb84139ec964034') }
+}
+camp> db.website.insert({'roll':'3','name':'rahul','amount':3000,'url':'www.google.com'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66f2557fecb84139ec964035') }
+}
+camp> db.website.insert({'roll':'4','name':'tejaswini','amount':4000,'url':'www.gmail.com'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66f25592ecb84139ec964036') }
+}
+camp> db.website.insert({'roll':'5','name':'raj','amount':1000,'url':'www.pvg.com'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66f255a7ecb84139ec964037') }
+}
+camp> db.website.aggregate({$group:{_id:"$name","total":{$avg:"$amount"}}});
+[
+  { _id: 'tejaswini', total: 4000 },
+  { _id: 'siddhi', total: 2000 },
+  { _id: 'rahul', total: 3000 },
+  { _id: 'raj', total: 1000 },
+  { _id: 'riya', total: 1000 }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$sum:"$amount"}}});
+[
+  { _id: 'rahul', total: 3000 },
+  { _id: 'riya', total: 1000 },
+  { _id: 'tejaswini', total: 4000 },
+  { _id: 'raj', total: 1000 },
+  { _id: 'siddhi', total: 2000 }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$min:"$amount"}}});
+[
+  { _id: 'rahul', total: 3000 },
+  { _id: 'riya', total: 1000 },
+  { _id: 'tejaswini', total: 4000 },
+  { _id: 'raj', total: 1000 },
+  { _id: 'siddhi', total: 2000 }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$max:"$amount"}}});
+[
+  { _id: 'rahul', total: '2000' },
+  { _id: 'riya', total: '2000' },
+  { _id: 'tejaswini', total: '4000' },
+  { _id: 'raj', total: '1000' },
+  { _id: 'siddhi', total: '3000' }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$first:"$amount"}}});
+[
+  { _id: 'raj', total: '1000' },
+  { _id: 'rahul', total: '2000' },
+  { _id: 'siddhi', total: '3000' },
+  { _id: 'tejaswini', total: '4000' },
+  { _id: 'riya', total: '2000' }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$last:"$amount"}}});
+[
+  { _id: 'rahul', total: 3000 },
+  { _id: 'riya', total: 1000 },
+  { _id: 'siddhi', total: 2000 },
+  { _id: 'raj', total: 1000 },
+  { _id: 'tejaswini', total: 4000 }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$push:"$amount"}}});
+[
+  { _id: 'rahul', total: [ '2000', 3000 ] },
+  { _id: 'riya', total: [ '2000', '1000', 1000 ] },
+  { _id: 'siddhi', total: [ '3000', 2000 ] },
+  { _id: 'raj', total: [ '1000', 1000 ] },
+  { _id: 'tejaswini', total: [ '4000', 4000 ] }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$sum:1}}});
+[
+  { _id: 'raj', total: 2 },
+  { _id: 'rahul', total: 2 },
+  { _id: 'siddhi', total: 2 },
+  { _id: 'tejaswini', total: 2 },
+  { _id: 'riya', total: 3 }
+]
+camp> db.website.aggregate({$group:{_id:"$name","total":{$addToSet:"$amount"}}});
+[
+  { _id: 'rahul', total: [ 3000, '2000' ] },
+  { _id: 'riya', total: [ '1000', 1000, '2000' ] },
+  { _id: 'siddhi', total: [ 2000, '3000' ] },
+  { _id: 'raj', total: [ 1000, '1000' ] },
+  { _id: 'tejaswini', total: [ '4000', 4000 ] }
+]
+camp> db.createCollection('website1');
+{ ok: 1 }
+camp> db.website1.insert({'r':1,'name':'riya'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66f259b9ecb84139ec964038') }
+}
+camp> db.website1.find().pretty()
+[ { _id: ObjectId('66f259b9ecb84139ec964038'), r: 1, name: 'riya' } ]
+camp> db.website1.createIndex({'name':1})
+name_1
+camp> db.website1.createIndex({'name':-1})
+name_-1
+camp> db.website1.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1 }, name: 'name_1' },
+  { v: 2, key: { name: -1 }, name: 'name_-1' }
+]
+camp> db.website1.createIndex({'name':-1})
+name_-1
+camp> db.website.dropIndex({'name':-1})
+MongoshInternalError[IndexNotFound]: can't find index with key: { name: -1 }
+camp> db.website1.dropIndex({'name':1})
+{ nIndexesWas: 3, ok: 1 }
+camp> db.website1.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: -1 }, name: 'name_-1' }
+]
+camp> db.website1.find().pretty()
+[ { _id: ObjectId('66f259b9ecb84139ec964038'), r: 1, name: 'riya' } ]
+camp> db.website1.createIndex({'name':1})
+name_1
+camp> db.website1.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: -1 }, name: 'name_-1' },
+  { v: 2, key: { name: 1 }, name: 'name_1' }
+]
+camp> 
+
+

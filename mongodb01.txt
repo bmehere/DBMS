@@ -1,0 +1,125 @@
+Assignment no.1 (Group B)
+
+test> show dbs
+admin   40.00 KiB
+config  60.00 KiB
+local   40.00 KiB
+test> use student
+switched to db student
+student> db.createCollection('student');
+{ ok: 1 }
+student> db.student.insert({'Rollno':'1','Name':'Riya','class':'TE COMP'});
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66ebc66c111d944f16964033') }
+}
+student> db.student.insert({'Rollno':'2','Name':'priya','class':'TE COMP'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66ebc76f111d944f16964034') }
+}
+student> db.student.insert({'Rollno':'3','Name':'rahul','class':'TE COMP'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66ebc77f111d944f16964035') }
+}
+student> db.student.insert({'Rollno':'4','Name':'rohan','class':'TE COMP'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('66ebc792111d944f16964036') }
+}
+student> db.student.find();
+[
+  {
+    _id: ObjectId('66ebc66c111d944f16964033'),
+    Rollno: '1',
+    Name: 'Riya',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc76f111d944f16964034'),
+    Rollno: '2',
+    Name: 'priya',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc77f111d944f16964035'),
+    Rollno: '3',
+    Name: 'rahul',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc792111d944f16964036'),
+    Rollno: '4',
+    Name: 'rohan',
+    class: 'TE COMP'
+  }
+]
+
+student> db.student.update({'Name':'Riya'},{$set:{'Name':'shrushti'}});
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+student> db.student.find().pretty();
+[
+  {
+    _id: ObjectId('66ebc66c111d944f16964033'),
+    Rollno: '1',
+    Name: 'shrushti',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc76f111d944f16964034'),
+    Rollno: '2',
+    Name: 'priya',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc77f111d944f16964035'),
+    Rollno: '3',
+    Name: 'rahul',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc792111d944f16964036'),
+    Rollno: '4',
+    Name: 'rohan',
+    class: 'TE COMP'
+  }
+]
+student> db.student.find().sort({'Rollno':'-1'});
+[
+  {
+    _id: ObjectId('66ebc792111d944f16964036'),
+    Rollno: '4',
+    Name: 'rohan',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc77f111d944f16964035'),
+    Rollno: '3',
+    Name: 'rahul',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc76f111d944f16964034'),
+    Rollno: '2',
+    Name: 'priya',
+    class: 'TE COMP'
+  },
+  {
+    _id: ObjectId('66ebc66c111d944f16964033'),
+    Rollno: '1',
+    Name: 'shrushti',
+    class: 'TE COMP'
+  }
+]
+student> 
+
+
